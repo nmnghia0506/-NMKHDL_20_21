@@ -1,6 +1,6 @@
 import scrapy
 
-class collect_player_url(scrapy.Spider):
+class collect_champagne_url(scrapy.Spider):
     name='champagne_urls' 
     DOWNLOAD_DELAY = 1
 
