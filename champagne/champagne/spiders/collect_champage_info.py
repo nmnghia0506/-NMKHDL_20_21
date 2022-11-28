@@ -24,22 +24,25 @@ class collect_champagnes_info(scrapy.Spider):
     
   def parse(self, response):
     champagne_inf = {
-      'Ma_sp':  response.css('* > td > span::text').get(),
+      'Ma_sp': response.css('* > td > span::text').get(),
       'Ten_sp': response.xpath('*//div[1]/div[1]/div[3]/h1/text()').get(),
       'Gia': response.xpath('*//p/span/bdi/text()').get(),
-      'Xuat_xu': response.xpath('*//tr/*[contains(text(), "Xuất")]/following-sibling::*/text()').get()[:-1],
-      'Nong_do': response.xpath('*//tr/*[contains(text(), "Nồng")]/following-sibling::*/text()').get()[:-1],
-      'Dung_tich': response.xpath('*//tr/*[contains(text(), "Dung")]/following-sibling::*/text()').get()[:-1],
-      'Giong_nho':  response.xpath('*//tr/*[contains(text(), "Giống")]/following-sibling::*/text()').get()[:-1],
-      
+      'Xuat_xu': response.xpath('*//tr/*[contains(text(), "Xuất")]/following-sibling::*/text()').extract_first(),
+      'Nong_do': response.xpath('*//tr/*[contains(text(), "Nồng")]/following-sibling::*/text()').extract_first(),
+      'Dung_tich': response.xpath('*//tr/*[contains(text(), "Dung")]/following-sibling::*/text()').extract_first(),
+      'Giong_nho': response.xpath('*//tr/*[contains(text(), "Giống")]/following-sibling::*/text()').extract_first(),
+      'Mau_sac': response.xpath('*//span/*[contains(text(), "Màu")]/following-sibling::text()').extract_first(),   
+      'Loai_ruou': response.xpath('*//tr/*[contains(text(), "Loại")]/following-sibling::*/text()').extract_first(),
+      'Thuong_hieu': response.xpath('*//tr/*[contains(text(), "Thương")]/following-sibling::*/text()').extract_first(),
+      'Vung_lam_vang': response.xpath('*//tr/*[contains(text(), "Vùng")]/following-sibling::*/text()').extract_first(),
     }
 
 
     
     yield champagne_inf
     
-    if self.champagne_count < 3:  # test
-    # if self.champagne_count < len(self.champagnes):
-        next_page_url = self.champagnes[self.champagne_count]['champagne_url'] 
-        self.champagne_count += 1
-        yield scrapy.Request(url=next_page_url, callback=self.parse) 
+    #if self.champagne_count < 5:  # test
+    if self.champagne_count < len(self.champagnes):
+      next_page_url = self.champagnes[self.champagne_count]['champagne_url'] 
+      self.champagne_count += 1
+      yield scrapy.Request(url=next_page_url, callback=self.parse) 
