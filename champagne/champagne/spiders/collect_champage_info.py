@@ -33,7 +33,7 @@ class collect_champagnes_info(scrapy.Spider):
       'Giong_nho': response.xpath('*//tr/*[contains(text(), "Giống")]/following-sibling::*/text()').extract_first(),
       'Mau_sac': response.xpath('*//span/*[contains(text(), "Màu")]/following-sibling::text()').extract_first(),   
       'Loai_ruou': response.xpath('*//tr/*[contains(text(), "Loại")]/following-sibling::*/text()').extract_first(),
-      'Thuong_hieu': response.xpath('*//tr/*[contains(text(), "Thương")]/following-sibling::*/text()').extract_first(),
+      'Thuong_hieu': response.xpath('//span/strong[contains(text(), "Thương")]/following-sibling::text() | *//tr/*[contains(text(), "Thương")]/following-sibling::*/text()').extract_first(),
       'Vung_lam_vang': response.xpath('*//tr/*[contains(text(), "Vùng")]/following-sibling::*/text()').extract_first(),
     }
 
