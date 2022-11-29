@@ -25,6 +25,6 @@ class collect_champagne_url(scrapy.Spider):
 
         url_string = "https://winevn.com/ruou-vang/page/"
         self.offset += 1
-        if self.offset <= 3:
+        if self.offset <= 236:
             url_string = url_string + str(self.offset)
             yield scrapy.Request(url=url_string, callback=self.parse)
