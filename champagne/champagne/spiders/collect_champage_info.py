@@ -44,7 +44,7 @@ class collect_champagnes_info(scrapy.Spider):
     champagne_inf = {
       'Ma_sp': response.css('* > td > span::text').get(),
       'Ten_sp': response.xpath('*//div[1]/div[1]/div[3]/h1/text()').get(),
-      'Gia': response.xpath('*//p/span/bdi/text()').get(),
+      'Gia': response.xpath('*//p/span/bdi/text() | *//ins/span/bdi/text()').get(),
       'Xuat_xu': response.xpath('*//tr/*[contains(text(), "Xuất")]/following-sibling::*/text()').extract_first(),
       'Nong_do': response.xpath('*//tr/*[contains(text(), "Nồng")]/following-sibling::*/text()').extract_first(),
       'Dung_tich': response.xpath('*//tr/*[contains(text(), "Dung")]/following-sibling::*/text()').extract_first(),
