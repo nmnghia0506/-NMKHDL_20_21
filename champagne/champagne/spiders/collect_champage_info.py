@@ -23,18 +23,36 @@ class collect_champagnes_info(scrapy.Spider):
      
     
   def parse(self, response):
+
+    giongNho = response.xpath('//span/*[contains(text(), "Giống")]/following-sibling::a/text()').getall()
+    if giongNho == []:
+      giongNho = response.xpath('//span/*[contains(text(), "Giống")]/following::text()').extract_first()
+      # if giongNho != None: giongNho = giongNho[2:].split('–')
+    
+    thuongHieu = response.xpath('//span/*[contains(text(), "Thương")]/following-sibling::a/text()').extract_first()
+    if not thuongHieu:
+      thuongHieu = response.xpath('//span/strong[contains(text(), "Thương")]/following-sibling::text()').extract_first()
+      # if thuongHieu != None: thuongHieu = thuongHieu[2:]
+
+
+    vungLamVang = response.xpath('//span/*[contains(text(), "Vùng")]/following-sibling::a/text()').extract_first()
+    if not vungLamVang:
+      vungLamVang = response.xpath('//span/*[contains(text(), "Vùng")]/following::text()').extract_first()
+      # if vungLamVang != None: vungLamVang = vungLamVang[2:]
+
+
     champagne_inf = {
       'Ma_sp': response.css('* > td > span::text').get(),
       'Ten_sp': response.xpath('*//div[1]/div[1]/div[3]/h1/text()').get(),
-      'Gia': response.xpath('*//p/span/bdi/text()').get(),
+      'Gia': response.xpath('*//p/span/bdi/text() | *//ins/span/bdi/text()').get(),
       'Xuat_xu': response.xpath('*//tr/*[contains(text(), "Xuất")]/following-sibling::*/text()').extract_first(),
       'Nong_do': response.xpath('*//tr/*[contains(text(), "Nồng")]/following-sibling::*/text()').extract_first(),
       'Dung_tich': response.xpath('*//tr/*[contains(text(), "Dung")]/following-sibling::*/text()').extract_first(),
-      'Giong_nho': response.xpath('*//tr/*[contains(text(), "Giống")]/following-sibling::*/text()').extract_first(),
+      'Giong_nho': giongNho,
       'Mau_sac': response.xpath('*//span/*[contains(text(), "Màu")]/following-sibling::text()').extract_first(),   
-      'Loai_ruou': response.xpath('*//tr/*[contains(text(), "Loại")]/following-sibling::*/text()').extract_first(),
-      'Thuong_hieu': response.xpath('*//tr/*[contains(text(), "Thương")]/following-sibling::*/text()').extract_first(),
-      'Vung_lam_vang': response.xpath('*//tr/*[contains(text(), "Vùng")]/following-sibling::*/text()').extract_first(),
+      'Loai_ruou': response.xpath('//span/*[contains(text(), "Loại")]/following::a/text()').extract_first(),
+      'Thuong_hieu': thuongHieu,
+      'Vung_lam_vang': vungLamVang,
     }
 
 
